@@ -1,0 +1,7 @@
+body {
+	padding-top: 50px;
+}
+
+.dropdown-menu.feed-list > li > a {
+	display: inline-block;
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html ng-app="4thguy.feedReader">
+
+    <head>
+	<meta charset="utf-8">
+	<title>Bootstrap, from Twitter</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!-- build:css styles/components.min.css -->
+	<!-- bower:css -->
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+	<!-- endbower -->
+	<!-- endbuild -->
+	<!-- build:css(.tmp) styles/main.min.css -->
+	<link rel="stylesheet" href="styles/progress-bar.css">
+	<link rel="stylesheet" href="styles/article-card.css">
+	<link rel="stylesheet" href="styles/app.css">
+	<!-- endbuild -->
+	<!-- build:js scripts/components.min.js -->
+	<!-- bower:js -->
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="bower_components/pleasejs/Please.js"></script>
+	<script src="bower_components/nginfinitescroll/build/ng-infinite-scroll.js"></script>
+	<!-- endbower -->
+	<!-- endbuild -->
+	<!-- build:js scripts/app.min.js -->
+	<script src="scripts/app.js"></script>
+	<script src="scripts/refresh-feed.js"></script>
+	<!-- endbuild -->
+
+    </head>
+
+    <body>
+
+	<div class="container">
+
+	    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+		    <div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			    <span class="sr-only">Toggle navigation</span>
+			    <span class="icon-bar"></span>
+			    <span class="icon-bar"></span>
+			    <span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Brand</a>
+		    </div>
+
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+			<ul class="nav navbar-nav navbar-right">
+			    <li class="dropdown"  ng-controller="updateIntervalCtrl">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Update interval: {{selectedOption.name}} <span class="caret"></span></a>
+				<ul class="dropdown-menu update-timer-list" role="menu">
+				    <li ng-repeat="option in options">
+					<a href="#" ng-click="$emit('selectOption', $index)">{{option.name}}</a>
+				    </li>
+				</ul>
+			    </li>
+			    <li class="dropdown"  ng-controller="feedCtrl" ng-init="newAddress = ''">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Current feeds <span class="caret"></span></a>
+				<ul class="dropdown-menu feed-list" role="menu">
+				    <li ng-repeat="item in feedList">
+					<a href="#" ng-click="$emit('removeFeed', $index)">Delete</a>
+					<span>{{item}}</span>
+				    </li>
+				</ul>
+			    </li>
+			</ul>
+
+			<form class="navbar-form navbar-left" role="search" ng-controller="feedCtrl" ng-init="newAddress = ''">
+			    <div class="form-group">
+				<input type="text" class="form-control" placeholder="Add feed" ng-model="newAddress">
+			    </div>
+			    <button type="submit" class="btn btn-default" ng-click="$emit('addFeed', newAddress)">Add</button>
+			</form>
+
+		    </div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+		<progress ng-controller="progressBarCtrl" ng-value="value" max="{{max}}" class="progress-bar"></progress>
+	    </nav>
+
+	    <div class="row" ng-controller="feedScroller" infinite-scroll="scrolledToBottom()" infinite-scroll-distance="1">
+		<div class="col-md-6" ng-repeat="article in articles| limitTo: articleCountLimit track by article.id">
+		    <div class="article" ng-style="article.styling" ng-init="article.lazyInit()">
+			<div class="preview">
+			    <h2>
+				<a href="{{article.link}}" target="_blank">
+				    {{article.title}}
+				</a>
+			    </h2>
+			    <p><span ng-if="article.author">{{article.author}} | </span>{{article.source}}</p>
+			    <p>
+				{{article.contentSnippet}}
+			    </p>
+			</div>
+		    </div>
+		</div>
+	    </div>
+
+	</div>
+
+
+    </body>
+
+</html>

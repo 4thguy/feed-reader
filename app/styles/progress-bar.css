@@ -1,0 +1,22 @@
+.navbar.navbar-fixed-top .progress-bar[value] {
+    appearance: none;
+}
+
+.navbar.navbar-fixed-top .progress-bar[value]::progress-bar {
+    background-color: #eee;
+}
+
+.navbar.navbar-fixed-top .progress-bar[value]::progress-value {
+    background-color: black;
+    transition: width linear 60s;
+}
+
+.navbar.navbar-fixed-top .progress-bar {
+    position: absolute;
+    left:0;
+    right:0;
+    top:50px;
+    height: 2px;
+    width: 100%;
+}
+
